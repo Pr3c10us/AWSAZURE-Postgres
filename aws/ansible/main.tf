@@ -40,7 +40,6 @@ resource "aws_instance" "awx-server" {
   connection {
     type     = "ssh"
     user     = "ubuntu"
-    password = ""  
     private_key = "${file("${aws_key_pair.key_pair.key_name}.pem")}"
     host = "${self.public_ip}"
   }

@@ -12,7 +12,8 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    # Set destination port range to 22 for SSH and 5432 for PostgreSQL
+    destination_port_ranges     = ["22","5432"]
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -69,9 +70,13 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.myterraformnic.id]
   size                  = "Standard_D2ads_v5"
-  admin_username                  = "azureuser"
-  admin_password                  = "P@ssw0rd1234!"
-  disable_password_authentication = false
+  admin_username        = "ubuntu"
+
+
+  admin_ssh_key {
+    username   = "ubuntu"
+    public_key = tls_private_key.example_ssh.private_key_pem
+  }
 
   os_disk {
     name                 = "myOsDisk"
@@ -85,27 +90,21 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  # connection {
-  #   type        = "ssh"
-  #   host     = self.public_ip_address
-  #   user     = self.admin_username
-  #   private_key = tls_private_key.example_ssh.private_key_pem
-  # }
-  # provisioner "file" {
-  #   source      = "./script-init.sh"
-  #   destination = "/tmp/script-init.sh"
+  provisioner "file" {
+    source      = "./script-init.sh"
+    destination = "/tmp/script-init.sh"
 
-  # }
+  }
 
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "echo done",
-      # "tr -d '\r' </tmp/script-init.sh >a.tmp",
-      # "mv a.tmp script-init.sh",
-      # "chmod +x ./script-init.sh",
-      # "sudo ./script-init.sh",
-  #   ]
-  # }
+  provisioner "remote-exec" {
+    inline = [
+      "echo done",
+      "tr -d '\r' </tmp/script-init.sh >a.tmp",
+      "mv a.tmp script-init.sh",
+      "chmod +x ./script-init.sh",
+      "sudo ./script-init.sh",
+    ]
+  }
   # provisioner "remote-exec" {
   #   inline = [
   #     "echo ${azurerm_linux_virtual_machine.myterraformvm.public_ip_address}",

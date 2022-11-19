@@ -55,7 +55,7 @@ sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthenticatio
 sudo systemctl restart sshd
 
 # Generate ssh key
-ssh-keygen -t rsa 
+ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 # Copy the key to postgress 
 sshpass -p 'postgres' ssh-copy-id postgres@localhost
 
