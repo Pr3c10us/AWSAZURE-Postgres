@@ -88,6 +88,12 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
+  connection {
+    type        = "ssh"
+    host     = self.public_ip_address
+    user     = self.admin_username
+    private_key = file("postgres_id_rsa")
+  }
   provisioner "file" {
     source      = "./script-init.sh"
     destination = "/tmp/script-init.sh"
