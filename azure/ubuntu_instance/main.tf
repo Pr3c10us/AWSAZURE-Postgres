@@ -71,14 +71,15 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   size                  = "Standard_D2ads_v5"
   admin_username        = "ubuntu"
 
+  os_disk {
+    name                 = "myOsDisk"
+    caching              = "ReadWrite"
+    storage_account_type = "Premium_LRS"
+  }
 
   admin_ssh_key {
     username   = "ubuntu"
     public_key = file("postgres_id_rsa")
-  }
-
-  = "ReadWrite"
-    storage_account_type = "Premium_LRS"
   }
 
   source_image_reference {
