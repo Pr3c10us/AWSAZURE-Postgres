@@ -19,7 +19,7 @@ resource "aws_instance" "awx-server" {
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]
   associate_public_ip_address = var.linux_associate_public_ip_address
   source_dest_check           = false
-  key_name                    = aws_key_pair.key_pair.key_name
+  key_name                    = "postgres_id_rsa"
   
   # root disk
   root_block_device {
@@ -53,7 +53,7 @@ resource "aws_instance" "awx-server" {
 
 # Create Elastic IP for the EC2 instance
 resource "aws_eip" "linux-eip" {
-  instance = aws_instance.linux-server.id
+  instance = aws_instance.awx-server.id
   vpc  = true
   tags = {
     Name        = "${lower(var.app_name)}-eip"
