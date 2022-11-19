@@ -35,7 +35,7 @@ resource "aws_instance" "awx-server" {
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]
   associate_public_ip_address = var.linux_associate_public_ip_address
   source_dest_check           = false
-  key_name                    = "postgres_id_rsa"
+  key_name                    = aws_key_pair.key_pair.key_name
   
   # root disk
   root_block_device {

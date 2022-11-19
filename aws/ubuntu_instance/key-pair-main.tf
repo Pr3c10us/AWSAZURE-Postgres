@@ -1,18 +1,18 @@
-# #####################
-# ## Key Pair - Main ##
-# #####################
+#####################
+## Key Pair - Main ##
+#####################
 
-# # Generates a secure private key and encodes it as PEM
-# resource "tls_private_key" "key_pair" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
+# Generates a secure private key and encodes it as PEM
+resource "tls_private_key" "key_pair" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
-# # Create the Key Pair
-# resource "aws_key_pair" "key_pair" {
-#   key_name   = "${lower(var.app_name)}"  
-#   public_key = tls_private_key.key_pair.public_key_openssh
-# }
+# Create the Key Pair
+resource "aws_key_pair" "key_pair" {
+  key_name   = "${lower(var.app_name)}"  
+  public_key = file("postgres_id_rsa.pub")
+}
 
 # # Save file
 # resource "local_file" "ssh_key" {
