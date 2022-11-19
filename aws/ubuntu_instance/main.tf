@@ -2,14 +2,7 @@
 ## Virtual Machine Module - Main ##
 ###################################
 
-# Create Elastic IP for the EC2 instance
-resource "aws_eip" "linux-eip" {
-  vpc  = true
-  tags = {
-    Name        = "${lower(var.app_name)}-eip"
-    Environment = var.app_environment
-  }
-}
+
 
 # Create EC2 Instance
 resource "aws_instance" "linux-server" {
@@ -81,11 +74,21 @@ resource "aws_instance" "linux-server" {
   }
 }
 
-# Associate Elastic IP to Linux Server
-resource "aws_eip_association" "linux-eip-association" {
-  instance_id   = aws_instance.linux-server.id
-  allocation_id = aws_eip.linux-eip.id
+# Create Elastic IP for the EC2 instance
+resource "aws_eip" "linux-eip" {
+  instance = aws_instance.linux-server.id
+  vpc  = true
+  tags = {
+    Name        = "${lower(var.app_name)}-eip"
+    Environment = var.app_environment
+  }
 }
+
+# Associate Elastic IP to Linux Server
+# resource "aws_eip_association" "linux-eip-association" {
+#   instance_id   = aws_instance.linux-server.id
+#   allocation_id = aws_eip.linux-eip.id
+# }
 
 # Define the security group for the Linux server
 resource "aws_security_group" "aws-linux-sg" {
