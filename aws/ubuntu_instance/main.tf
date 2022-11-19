@@ -13,7 +13,7 @@ resource "aws_eip" "linux-eip" {
 
 # Create EC2 Instance
 resource "aws_instance" "linux-server" {
-  ami                         = data.aws_ami.ubuntu-linux-2004.id
+  ami                         = "ami-06334a6e92bb3f864"
   instance_type               = var.linux_instance_type
   subnet_id                   = var.public_subnet_id
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]
