@@ -1,3 +1,7 @@
+resource "azurerm_resource_group" "rg" {
+  name      = var.resource_group_name
+  location  = var.resource_group_location
+}
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
