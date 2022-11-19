@@ -6,8 +6,9 @@ resource "azurerm_resource_group" "rg" {
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
   name                = "NetworkSecurityGroup"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.resource_group_location
+}
+  resource_group_name = var.resource_group_name
 
   security_rule {
     name                       = "SSH"
@@ -26,8 +27,9 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
   name                = "AZ_NIC"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.resource_group_location
+}
+  resource_group_name =  var.resource_group_name
 
   ip_configuration {
     name                          = "myNicConfiguration"
@@ -46,7 +48,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 resource "random_id" "randomId" {
   keepers = {
     # Generate a new ID only when a new resource group is defined
-    resource_group = azurerm_resource_group.rg.name
+    resource_group =  var.resource_group_name
   }
 
   byte_length = 8
@@ -55,8 +57,9 @@ resource "random_id" "randomId" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "diag${random_id.randomId.hex}"
-  location                 = azurerm_resource_group.rg.location
-  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = var.resource_group_location
+}
+  resource_group_name      =  var.resource_group_name
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
@@ -70,8 +73,9 @@ resource "tls_private_key" "example_ssh" {
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
   name                  = "azure-pg"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
+  location              = var.resource_group_location
+}
+  resource_group_name   =  var.resource_group_name
   network_interface_ids = [azurerm_network_interface.myterraformnic.id]
   size                  = "Standard_D2ads_v5"
   admin_username        = "ubuntu"

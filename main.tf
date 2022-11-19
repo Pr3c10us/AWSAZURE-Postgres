@@ -9,10 +9,10 @@
 #   location  = var.azure_location
 # }
 
-# resource "azurerm_resource_group" "rg" {
-#   name      = var.azure_resource_group_name
-#   location  = var.azure_location
-# }
+resource "azurerm_resource_group" "rg" {
+  name      = var.azure_resource_group_name
+  location  = var.azure_location
+}
 
 
 module "aws_vpc" {
@@ -77,8 +77,8 @@ module "aws_awx_instance" {
 module "azure_instance" {
   source = "./azure/ubuntu_instance"
 
-  resource_group_name                = var.azure_resource_group_name
-  resource_group_location            = var.azure_location
+  resource_group_name                = azurerm_resource_group.rg.name 
+  resource_group_location            = azurerm_resource_group.rg.location
   public_subnet_id                   = module.azure_vnet.public_subnet_id
 }
 
