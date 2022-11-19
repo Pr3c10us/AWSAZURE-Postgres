@@ -2,11 +2,26 @@
 ## Virtual Machine Module - Main ##
 ###################################
 
+data "aws_ami" "ubuntu" {
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"] # Canonical
+}
 
 
 # Create EC2 Instance
 resource "aws_instance" "linux-server" {
-  ami                         = "ami-06334a6e92bb3f864"
+  ami                         = "${data.aws_ami.ubuntu.id}"
   instance_type               = var.linux_instance_type
   subnet_id                   = var.public_subnet_id
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]

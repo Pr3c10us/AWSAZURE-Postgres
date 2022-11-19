@@ -68,7 +68,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
   location              = var.resource_group_location
   resource_group_name   =  var.resource_group_name
   network_interface_ids = [azurerm_network_interface.myterraformnic.id]
-  size                  = "Standard_D2ads_v5"
+  size                  = "Standard_D2ds_v4"
   admin_username        = "ubuntu"
 
   os_disk {
