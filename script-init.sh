@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Create the file repository configuration:
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 # Import the repository signing key:
@@ -19,14 +21,14 @@ sudo bash add-citus-repo.sh
 
 # install the server and initialize db
 
-sudo apt-get -y install postgresql-14-citus-10.2
+sudo apt-get -y install postgresql-15-citus-11.1
 
 # preload citus extension
-sudo pg_conftool 14 main set shared_preload_libraries citus
+sudo pg_conftool 15 main set shared_preload_libraries citus
 
 sudo systemctl restart postgresql
 
-sudo pg_conftool 14 main set listen_addresses '*'
+sudo pg_conftool 15 main set listen_addresses '*'
 
 # start the db server
 sudo service postgresql restart
@@ -38,13 +40,28 @@ sudo update-rc.d postgresql enable
 # add the citus extension
 sudo -i -u postgres psql -c "CREATE EXTENSION citus;"
 
-mkdir -p /logs/archive
-chown postgres:postgres -R /logs/
-
-
+sudo mkdir -p /logs/archive
+sudo chown postgres:postgres -R /logs/
 
 echo "postgres connection"
 
-
 echo 'postgres:postgres' | sudo chpasswd
+
+# Change sshd config so that it allows password authentication
+sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+# Change sshd config so it challenges for password
+sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+# Restart sshd
+sudo systemctl restart sshd
+
+# Generate ssh key
+ssh-keygen -t rsa 
+# Copy the key to postgress 
+sshpass -p 'postgres' ssh-copy-id postgres@localhost
+
+
+
+
+
+
 

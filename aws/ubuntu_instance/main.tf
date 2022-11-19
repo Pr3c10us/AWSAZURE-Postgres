@@ -41,36 +41,35 @@ resource "aws_instance" "linux-server" {
   connection {
     type     = "ssh"
     user     = "ubuntu"
-    password = ""  
     private_key = "${file("${aws_key_pair.key_pair.key_name}.pem")}"
     host = "${self.public_ip}"
     }
   
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update -y",
-      "sudo apt-get upgrade -y",
-      "sudo apt-get install nginx -y",
-      "sudo systemctl start nginx"
-    ]
-  }
-
-  # provisioner "file" {
-  #   source      = "./script-init.sh"
-  #   destination = "/tmp/script-init.sh"
-  # }
-
   # provisioner "remote-exec" {
   #   inline = [
-  #     "sudo sed -i '/^[^#]*PasswordAuthentication[[:space:]]no/c\\PasswordAuthentication yes' /etc/ssh/sshd_config",
-  #     "sudo -i systemctl restart sshd",
-  #     "echo 'ubuntu:ubuntu' | sudo chpasswd",
-  #     "tr -d '\r' </tmp/script-init.sh >a.tmp",
-  #     "mv a.tmp script-init.sh",
-  #     "chmod +x ./script-init.sh",
-  #     "sudo ./script-init.sh"
+  #     "sudo apt-get update -y",
+  #     "sudo apt-get upgrade -y",
+  #     "sudo apt-get install nginx -y",
+  #     "sudo systemctl start nginx"
   #   ]
   # }
+
+  provisioner "file" {
+    source      = "./script-init.sh"
+    destination = "/tmp/script-init.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo sed -i '/^[^#]*PasswordAuthentication[[:space:]]no/c\\PasswordAuthentication yes' /etc/ssh/sshd_config",
+      "sudo -i systemctl restart sshd",
+      "echo 'ubuntu:ubuntu' | sudo chpasswd",
+      "tr -d '\r' </tmp/script-init.sh >a.tmp",
+      "mv a.tmp script-init.sh",
+      "chmod +x ./script-init.sh",
+      "sudo ./script-init.sh"
+    ]
+  }
   # provisioner "remote-exec" {
   #   inline = [
   #     "echo test"
@@ -108,6 +107,13 @@ resource "aws_security_group" "aws-linux-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow incoming SSH connections"
+  }
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow incoming Postgres connections"
   }
 
   egress {
