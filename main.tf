@@ -79,6 +79,7 @@ module "azure_instance" {
 
   resource_group_name                = var.azure_resource_group_name
   resource_group_location            = var.azure_location
+  public_subnet_id                   = module.azure_vnet.public_subnet_id
 }
 
 module "azure_vnet" {
