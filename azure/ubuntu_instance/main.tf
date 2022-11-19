@@ -74,7 +74,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    # public_key = tls_private_key.example_ssh.private_key_pem
+    public_key = ''
   }
 
   os_disk {
