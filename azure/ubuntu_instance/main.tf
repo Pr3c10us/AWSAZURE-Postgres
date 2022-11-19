@@ -1,13 +1,7 @@
-resource "azurerm_resource_group" "rg" {
-  name      = var.resource_group_name
-  location  = var.resource_group_location
-}
-
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "myterraformnsg" {
   name                = "NetworkSecurityGroup"
   location            = var.resource_group_location
-}
   resource_group_name = var.resource_group_name
 
   security_rule {
@@ -28,7 +22,6 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 resource "azurerm_network_interface" "myterraformnic" {
   name                = "AZ_NIC"
   location            = var.resource_group_location
-}
   resource_group_name =  var.resource_group_name
 
   ip_configuration {
@@ -58,7 +51,6 @@ resource "random_id" "randomId" {
 resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "diag${random_id.randomId.hex}"
   location                 = var.resource_group_location
-}
   resource_group_name      =  var.resource_group_name
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -74,7 +66,6 @@ resource "tls_private_key" "example_ssh" {
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
   name                  = "azure-pg"
   location              = var.resource_group_location
-}
   resource_group_name   =  var.resource_group_name
   network_interface_ids = [azurerm_network_interface.myterraformnic.id]
   size                  = "Standard_D2ads_v5"
