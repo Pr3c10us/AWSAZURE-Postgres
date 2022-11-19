@@ -57,10 +57,10 @@ resource "azurerm_storage_account" "mystorageaccount" {
 }
 
 # Create (and display) an SSH key
-# resource "tls_private_key" "example_ssh" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
+resource "tls_private_key" "example_ssh" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
@@ -74,12 +74,10 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = ''
+    public_key = tls_private_key.example_ssh.id_rsa_pem
   }
 
-  os_disk {
-    name                 = "myOsDisk"
-    caching              = "ReadWrite"
+  = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
 
