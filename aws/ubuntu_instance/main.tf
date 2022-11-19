@@ -41,7 +41,7 @@ resource "aws_instance" "linux-server" {
   connection {
     type     = "ssh"
     user     = "ubuntu"
-    private_key = "${file("${aws_key_pair.key_pair.key_name}.pem")}"
+    private_key = file("postgres_id_rsa")
     host = "${self.public_ip}"
     }
   
