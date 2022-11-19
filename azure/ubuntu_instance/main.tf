@@ -79,7 +79,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = file("postgres_id_rsa")
+    public_key = file("postgres_id_rsa.pub")
   }
 
   source_image_reference {
