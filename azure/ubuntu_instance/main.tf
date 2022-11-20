@@ -18,6 +18,13 @@ resource "azurerm_network_security_group" "myterraformnsg" {
   }
 }
 
+resource "azurerm_public_ip" "myterraformpublicip" {
+  name                = "PublicIP"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+}
+
 # Create network interface
 resource "azurerm_network_interface" "myterraformnic" {
   name                = "AZ_NIC"
@@ -28,6 +35,7 @@ resource "azurerm_network_interface" "myterraformnic" {
     name                          = "myNicConfiguration"
     subnet_id                     = var.public_subnet_id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.myterraformpublicip.id
   }
 }
 
@@ -56,11 +64,11 @@ resource "azurerm_storage_account" "mystorageaccount" {
   account_replication_type = "LRS"
 }
 
-# Create (and display) an SSH key
-resource "tls_private_key" "example_ssh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+# # Create (and display) an SSH key
+# resource "tls_private_key" "example_ssh" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
+# }
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
