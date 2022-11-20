@@ -40,7 +40,7 @@ module "aws_instance" {
   aws_vpc_id        = module.aws_vpc.vpc_id
 
   # Application Definition 
-  app_name        = "aws-db" # Do NOT enter any spaces
+  app_name        = "aws-postgres-db-p" # Do NOT enter any spaces
   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
   # Linux Virtual Machine
@@ -60,7 +60,7 @@ module "aws_awx_instance" {
   aws_vpc_id        = module.aws_vpc.vpc_id
 
   # Application Definition 
-  app_name        = "awx-server"      # Do NOT enter any spaces
+  app_name        = "awx-postgres-server-p"      # Do NOT enter any spaces
   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
   # Linux Virtual Machine

@@ -53,12 +53,8 @@ resource "aws_instance" "awx-server" {
     encrypted             = true
     delete_on_termination = true
   }
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    private_key = file("postgres_id_rsa")
-    host = "${self.public_ip}"
-  }
+  	user_data = "${file("script-init.sh")}"
+
 
 
   tags = {

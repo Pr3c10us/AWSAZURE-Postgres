@@ -88,27 +88,29 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  connection {
-    type        = "ssh"
-    host     = self.public_ip_address
-    user     = self.admin_username
-    private_key = file("postgres_id_rsa")
-  }
-  provisioner "file" {
-    source      = "./script-init.sh"
-    destination = "/tmp/script-init.sh"
+  custom_data = filebase64("script-init.sh")
 
-  }
+  # connection {
+  #   type        = "ssh"
+  #   host     = self.public_ip_address
+  #   user     = self.admin_username
+  #   private_key = file("postgres_id_rsa")
+  # }
+  # provisioner "file" {
+  #   source      = "./script-init.sh"
+  #   destination = "/tmp/script-init.sh"
 
-  provisioner "remote-exec" {
-    inline = [
-      "echo done",
-      "tr -d '\r' </tmp/script-init.sh >a.tmp",
-      "mv a.tmp script-init.sh",
-      "chmod +x ./script-init.sh",
-      "sudo ./script-init.sh",
-    ]
-  }
+  # }
+
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "echo done",
+  #     "tr -d '\r' </tmp/script-init.sh >a.tmp",
+  #     "mv a.tmp script-init.sh",
+  #     "chmod +x ./script-init.sh",
+  #     "sudo ./script-init.sh",
+  #   ]
+  # }
   # provisioner "remote-exec" {
   #   inline = [
   #     "echo ${azurerm_linux_virtual_machine.myterraformvm.public_ip_address}",

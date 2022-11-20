@@ -28,7 +28,6 @@ resource "aws_instance" "linux-server" {
   associate_public_ip_address = var.linux_associate_public_ip_address
   source_dest_check           = false
   key_name                    = aws_key_pair.key_pair.key_name
-  user_data                   = file("script-init.sh")
   
   # root disk
   root_block_device {
@@ -46,12 +45,8 @@ resource "aws_instance" "linux-server" {
     encrypted             = true
     delete_on_termination = true
   }
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    private_key = file("postgres_id_rsa")
-    host = "${self.public_ip}"
-    }
+  user_data = "${file("script-init.sh")}"
+
   
   # provisioner "remote-exec" {
   #   inline = [
@@ -62,22 +57,22 @@ resource "aws_instance" "linux-server" {
   #   ]
   # }
 
-  provisioner "file" {
-    source      = "./script-init.sh"
-    destination = "/tmp/script-init.sh"
-  }
+  # provisioner "file" {
+  #   source      = "./script-init.sh"
+  #   destination = "/tmp/script-init.sh"
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo sed -i '/^[^#]*PasswordAuthentication[[:space:]]no/c\\PasswordAuthentication yes' /etc/ssh/sshd_config",
-      "sudo -i systemctl restart sshd",
-      "echo 'ubuntu:ubuntu' | sudo chpasswd",
-      "tr -d '\r' </tmp/script-init.sh >a.tmp",
-      "mv a.tmp script-init.sh",
-      "chmod +x ./script-init.sh",
-      "sudo ./script-init.sh"
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo sed -i '/^[^#]*PasswordAuthentication[[:space:]]no/c\\PasswordAuthentication yes' /etc/ssh/sshd_config",
+  #     "sudo -i systemctl restart sshd",
+  #     "echo 'ubuntu:ubuntu' | sudo chpasswd",
+  #     "tr -d '\r' </tmp/script-init.sh >a.tmp",
+  #     "mv a.tmp script-init.sh",
+  #     "chmod +x ./script-init.sh",
+  #     "sudo ./script-init.sh"
+  #   ]
+  # }
   # provisioner "remote-exec" {
   #   inline = [
   #     "echo test"
