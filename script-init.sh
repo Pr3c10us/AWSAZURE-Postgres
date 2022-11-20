@@ -54,6 +54,9 @@ sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthenticatio
 # Restart sshd
 sudo systemctl restart sshd
 
+
+# Get the fingerprint of the key from postgres
+ssh-keyscan -H postgres@localhost >> ~/.ssh/known_hosts
 # Generate ssh key
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ''
 # Copy the key to postgress 
