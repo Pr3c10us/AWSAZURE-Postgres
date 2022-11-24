@@ -96,7 +96,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  custom_data = filebase64("script-init.tpl")
+  custom_data = filebase64("script-init.sh")
 
   # connection {
   #   type        = "ssh"

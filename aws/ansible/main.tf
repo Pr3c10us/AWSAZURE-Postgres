@@ -26,6 +26,9 @@ data "aws_ami" "ubuntu" {
 
     owners = ["099720109477"] # Canonical
 }
+data "aws_key_pair" "example" {
+  key_name = "postgres-instance-key"
+}
 
 # Create EC2 Instance
 resource "aws_instance" "awx-server" {
@@ -35,7 +38,7 @@ resource "aws_instance" "awx-server" {
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]
   associate_public_ip_address = var.linux_associate_public_ip_address
   source_dest_check           = false
-  key_name                    = aws_key_pair.key_pair.key_name
+  key_name                    = data.aws_key_pair.example.key_name
   
   # root disk
   root_block_device {
