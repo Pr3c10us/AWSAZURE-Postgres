@@ -56,7 +56,7 @@ resource "aws_instance" "awx-server" {
     encrypted             = true
     delete_on_termination = true
   }
-  	user_data = "${file("script-init.sh")}"
+  	# user_data = "${file("script-init.sh")}"
 
 
 
@@ -66,15 +66,15 @@ resource "aws_instance" "awx-server" {
   }
 }
 
-# Create Elastic IP for the EC2 instance
-resource "aws_eip" "linux-eip" {
-  instance = aws_instance.awx-server.id
-  vpc  = true
-  tags = {
-    Name        = "${lower(var.app_name)}-eip"
-    Environment = var.app_environment
-  }
-}
+# # Create Elastic IP for the EC2 instance
+# resource "aws_eip" "linux-eip" {
+#   instance = aws_instance.awx-server.id
+#   vpc  = true
+#   tags = {
+#     Name        = "${lower(var.app_name)}-eip"
+#     Environment = var.app_environment
+#   }
+# }
 
 # # Associate Elastic IP to Linux Server
 # resource "aws_eip_association" "linux-eip-association" {

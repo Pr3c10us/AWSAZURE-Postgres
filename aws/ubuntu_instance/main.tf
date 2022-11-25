@@ -50,7 +50,7 @@ resource "aws_instance" "linux-server" {
     encrypted             = true
     delete_on_termination = true
   }
-  user_data = "${file("script-init.sh")}"
+  # user_data = "${file("script-init.sh")}"
 
   
   # provisioner "remote-exec" {
