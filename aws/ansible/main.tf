@@ -32,7 +32,7 @@ data "aws_key_pair" "example" {
 
 # Create EC2 Instance
 resource "aws_instance" "awx-server" {
-  ami                         = "${data.aws_ami.ubuntu.id}"
+  ami                         = "ami-08c40ec9ead489470"
   instance_type               = var.linux_instance_type
   subnet_id                   = var.public_subnet_id
   vpc_security_group_ids      = [aws_security_group.aws-linux-sg.id]
