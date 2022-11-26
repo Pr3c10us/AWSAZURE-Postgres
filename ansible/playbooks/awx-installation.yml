@@ -1,0 +1,107 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Update cache
+      apt: 
+        update_cache: true
+
+    - name: So, first, import the Docker repository GPG key as shown.
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    - name:  add the Docker Community Edition (CE) repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        state: present
+      
+    - name: update the package lists and install Docker as
+      apt:
+        pkg: 
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io
+        state: latest
+        update_cache: true
+        
+    - name: Add the user to the docker group
+      shell: usermod -aG docker $USER
+
+    - name: Restart docker
+      shell: systemctl restart docker
+    
+    - name: Install docker-compose
+      apt:
+        pkg: docker-compose
+        state: latest
+        update_cache: true
+      
+    - name: Install ansible
+      apt:
+        pkg: ansible
+        state: latest
+        update_cache: true
+
+    - name: Add universe repository
+      shell: |
+        add-apt-repository universe
+
+    - name: Install required system packages
+      apt:
+        pkg: 
+          - libnode72 
+          - nodejs-doc
+        state: latest
+        update_cache: true
+
+    - name: Import nodejs key
+      shell: curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+
+    - name: Install nodejs and npm
+      apt:
+        pkg: 
+          - nodejs
+          - npm
+        state: latest
+        update_cache: true
+    
+    - name: Install npm globally
+      shell: |
+        npm install -g npm
+
+    - name: Download the AWX installer from the Github repository
+      apt: 
+       pkg: 
+        - python3-pip
+        - git
+        - pwgen
+        - unzip
+        - wget
+      state: latest
+      update_cache: true
+
+    - name: Use pip to install docker-compose 1.28.5
+      shell: |
+        pip3 install docker-compose==1.28.5
+
+    - name: get the AWX installer
+      shell: |
+        wget https://github.com/ansible/awx/archive/17.1.0.zip
+        unzip 17.1.0.zip
+
+    - name: cd into the awx directory
+      shell: |
+        cd awx-17.1.0/installer
+
+    - name: generate a 30 character secrete key with pwgen
+      shell: |
+        pwgen -N 1 -s 30
+
+    - name: uncomment the line in the inventory file
+      shell: |
+        sed -i 's/#admin_password=password/admin_password=password/' inventory  
+
+    - name: Run the AWX installer
+      shell: |
+        ansible-playbook -i inventory install.yml
