@@ -64,7 +64,7 @@ module "aws_awx_instance" {
   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
   # Linux Virtual Machine
-  linux_instance_type               = "t2.micro"
+  linux_instance_type               = "t2.medium"
   linux_associate_public_ip_address = true
   linux_root_volume_size            = 20
   linux_root_volume_type            = "gp2"
