@@ -13,7 +13,7 @@
 
     - name:  add the Docker Community Edition (CE) repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
         state: present
       
     - name: update the package lists and install Docker as
@@ -43,28 +43,24 @@
         state: latest
         update_cache: true
 
-    - name: Add universe repository
-      shell: |
-        add-apt-repository universe
-
-    - name: Install required system packages
-      apt:
-        pkg: 
-          - libnode72 
-          - nodejs-doc
-        state: latest
-        update_cache: true
-
     - name: Import nodejs key
-      shell: curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
     - name: Install nodejs and npm
       apt:
         pkg: 
           - nodejs
-          - npm
-        state: latest
+        state: present
         update_cache: true
+
+    - name:
+      shell: node -v
+      register: version_node
+
+    - name: display version
+      debug:
+        msg: "{{ version_node }}"
     
     - name: Install npm globally
       shell: |
@@ -72,14 +68,14 @@
 
     - name: Download the AWX installer from the Github repository
       apt: 
-       pkg: 
-        - python3-pip
-        - git
-        - pwgen
-        - unzip
-        - wget
-      state: latest
-      update_cache: true
+        pkg: 
+          - python3-pip
+          - git
+          - pwgen
+          - unzip
+          - wget
+        state: latest
+        update_cache: true
 
     - name: Use pip to install docker-compose 1.28.5
       shell: |
@@ -90,9 +86,9 @@
         wget https://github.com/ansible/awx/archive/17.1.0.zip
         unzip 17.1.0.zip
 
-    - name: cd into the awx directory
-      shell: |
-        cd awx-17.1.0/installer
+    # - name: cd into the awx directory
+    #   shell: |
+    #     cd awx-17.1.0/installer
 
     - name: generate a 30 character secrete key with pwgen
       shell: |
@@ -100,8 +96,8 @@
 
     - name: uncomment the line in the inventory file
       shell: |
-        sed -i 's/#admin_password=password/admin_password=password/' inventory  
+        sed -i 's/# admin_password=password/admin_password=password/' /home/ubuntu/awx-17.1.0/installer/inventory  
 
     - name: Run the AWX installer
       shell: |
-        ansible-playbook -i inventory install.yml
+        ansible-playbook -i /home/ubuntu/awx-17.1.0/installer/inventory /home/ubuntu/awx-17.1.0/installer/install.yml
