@@ -92,8 +92,8 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-ARM"
     version   = "latest"
   }
   # custom_data = filebase64("script-init.sh")
