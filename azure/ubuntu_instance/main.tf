@@ -87,13 +87,13 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = file("postgres_id_rsa.pub")
+    public_key = file("postgres-instance-key.pub")
   }
 
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "20.04-LTS"
     version   = "latest"
   }
   # custom_data = filebase64("script-init.sh")
