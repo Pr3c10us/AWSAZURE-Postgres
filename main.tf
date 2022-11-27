@@ -44,7 +44,7 @@ module "aws_instance" {
   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
   # Linux Virtual Machine
-  linux_instance_type               = "t3.large"
+  linux_instance_type               = "m5.large"
   linux_associate_public_ip_address = true
   linux_root_volume_size            = 20
   linux_root_volume_type            = "gp2"
