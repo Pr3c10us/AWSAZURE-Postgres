@@ -92,7 +92,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
+    offer     = "0-com-ubuntu-server-focal"
     sku       = "20_04-lts"
     version   = "latest"
   }
