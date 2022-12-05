@@ -127,6 +127,16 @@
 #   # }
 # }
 
+# Create a random id for the storage account name
+resource "random_id" "randomId" {
+  keepers = {
+    # Generate a new ID only when a new resource group is defined
+    resource_group = var.resource_group_name
+  }
+
+  byte_length = 8
+}
+
 # Create virtual network
 resource "azurerm_virtual_network" "my_terraform_network" {
   name                = "myVnet"
