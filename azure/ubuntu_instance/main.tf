@@ -63,7 +63,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "my_storage_account" {
-  name                     = "postgres-instance storage"
+  name                     = "postgresinstancestorage"
   location                 = var.resource_group_location
   resource_group_name      = var.resource_group_name
   account_tier             = "Standard"
