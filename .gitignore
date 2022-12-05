@@ -17,3 +17,4 @@ test/
 *.tfvars
 terraform.tfvars
 README.md
+postgres_id_rsa
