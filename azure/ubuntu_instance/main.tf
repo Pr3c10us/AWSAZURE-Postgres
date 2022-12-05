@@ -73,7 +73,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
-  name                     = "diag${random_id.randomId.hex}"
+  name                     = "diag831b09af8ca16677"
   location                 = var.resource_group_location
   resource_group_name      = var.resource_group_name
   account_tier             = "Standard"
