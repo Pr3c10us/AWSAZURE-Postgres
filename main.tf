@@ -51,7 +51,7 @@ module "aws_instance" {
   linux_data_volume_size            = 10
   linux_data_volume_type            = "gp2"
 }
-module "aws_instance" {
+module "aws_instance_2" {
   source = "./aws/ubuntu_instance"
 
   public_subnet_id = module.aws_vpc.public_subnet_id
