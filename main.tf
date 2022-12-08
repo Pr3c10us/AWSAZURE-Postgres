@@ -110,13 +110,13 @@ module "aws_awx_instance" {
 
 
 
-module "azure_instance" {
-  source = "./azure/ubuntu_instance"
+# module "azure_instance" {
+#   source = "./azure/ubuntu_instance"
 
-  resource_group_name                = azurerm_resource_group.rg.name 
-  resource_group_location            = azurerm_resource_group.rg.location
-  public_subnet_id                   = module.azure_vnet.public_subnet_id
-}
+#   resource_group_name                = azurerm_resource_group.rg.name 
+#   resource_group_location            = azurerm_resource_group.rg.location
+#   public_subnet_id                   = module.azure_vnet.public_subnet_id
+# }
 
 module "azure_vnet" {
   source = "./azure/vnet"
