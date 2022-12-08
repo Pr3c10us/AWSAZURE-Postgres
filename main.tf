@@ -33,60 +33,60 @@ module "dns" {
   private_route_table_id = module.aws_vpc.private_route_table_id
 }
 
-module "aws_instance" {
-  source = "./aws/ubuntu_instance"
+# module "aws_instance" {
+#   source = "./aws/ubuntu_instance"
 
-  public_subnet_id = module.aws_vpc.public_subnet_id
-  aws_vpc_id        = module.aws_vpc.vpc_id
+#   public_subnet_id = module.aws_vpc.public_subnet_id
+#   aws_vpc_id        = module.aws_vpc.vpc_id
 
-  # Application Definition 
-  app_name        = "aws-postgres-db-p" # Do NOT enter any spaces
-  app_environment = "dev"       # Dev, Test, Staging, Prod, etc
+#   # Application Definition 
+#   app_name        = "aws-postgres-db-p" # Do NOT enter any spaces
+#   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
-  # Linux Virtual Machine
-  linux_instance_type               = "t3.large"
-  linux_associate_public_ip_address = true
-  linux_root_volume_size            = 20
-  linux_root_volume_type            = "gp2"
-  linux_data_volume_size            = 10
-  linux_data_volume_type            = "gp2"
-}
-module "aws_2nd_instance" {
-  source = "./aws/ubuntu_instance"
+#   # Linux Virtual Machine
+#   linux_instance_type               = "t3.large"
+#   linux_associate_public_ip_address = true
+#   linux_root_volume_size            = 20
+#   linux_root_volume_type            = "gp2"
+#   linux_data_volume_size            = 10
+#   linux_data_volume_type            = "gp2"
+# }
+# module "aws_2nd_instance" {
+#   source = "./aws/ubuntu_instance"
 
-  public_subnet_id = module.aws_vpc.public_subnet_id
-  aws_vpc_id        = module.aws_vpc.vpc_id
+#   public_subnet_id = module.aws_vpc.public_subnet_id
+#   aws_vpc_id        = module.aws_vpc.vpc_id
 
-  # Application Definition 
-  app_name        = "aws-postgres-db-p2" # Do NOT enter any spaces
-  app_environment = "dev"       # Dev, Test, Staging, Prod, etc
+#   # Application Definition 
+#   app_name        = "aws-postgres-db-p2" # Do NOT enter any spaces
+#   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
-  # Linux Virtual Machine
-  linux_instance_type               = "t3.large"
-  linux_associate_public_ip_address = true
-  linux_root_volume_size            = 20
-  linux_root_volume_type            = "gp2"
-  linux_data_volume_size            = 10
-  linux_data_volume_type            = "gp2"
-}
-module "aws_3rd_instance" {
-  source = "./aws/ubuntu_instance"
+#   # Linux Virtual Machine
+#   linux_instance_type               = "t3.large"
+#   linux_associate_public_ip_address = true
+#   linux_root_volume_size            = 20
+#   linux_root_volume_type            = "gp2"
+#   linux_data_volume_size            = 10
+#   linux_data_volume_type            = "gp2"
+# }
+# module "aws_3rd_instance" {
+#   source = "./aws/ubuntu_instance"
 
-  public_subnet_id = module.aws_vpc.public_subnet_id
-  aws_vpc_id        = module.aws_vpc.vpc_id
+#   public_subnet_id = module.aws_vpc.public_subnet_id
+#   aws_vpc_id        = module.aws_vpc.vpc_id
 
-  # Application Definition 
-  app_name        = "aws-postgres-db-etcd" # Do NOT enter any spaces
-  app_environment = "dev"       # Dev, Test, Staging, Prod, etc
+#   # Application Definition 
+#   app_name        = "aws-postgres-db-etcd" # Do NOT enter any spaces
+#   app_environment = "dev"       # Dev, Test, Staging, Prod, etc
 
-  # Linux Virtual Machine
-  linux_instance_type               = "t3.large"
-  linux_associate_public_ip_address = true
-  linux_root_volume_size            = 20
-  linux_root_volume_type            = "gp2"
-  linux_data_volume_size            = 10
-  linux_data_volume_type            = "gp2"
-}
+#   # Linux Virtual Machine
+#   linux_instance_type               = "t3.large"
+#   linux_associate_public_ip_address = true
+#   linux_root_volume_size            = 20
+#   linux_root_volume_type            = "gp2"
+#   linux_data_volume_size            = 10
+#   linux_data_volume_type            = "gp2"
+# }
 
 
 module "aws_awx_instance" {
@@ -110,13 +110,13 @@ module "aws_awx_instance" {
 
 
 
-module "azure_instance" {
-  source = "./azure/ubuntu_instance"
+# module "azure_instance" {
+#   source = "./azure/ubuntu_instance"
 
-  resource_group_name                = azurerm_resource_group.rg.name 
-  resource_group_location            = azurerm_resource_group.rg.location
-  public_subnet_id                   = module.azure_vnet.public_subnet_id
-}
+#   resource_group_name                = azurerm_resource_group.rg.name 
+#   resource_group_location            = azurerm_resource_group.rg.location
+#   public_subnet_id                   = module.azure_vnet.public_subnet_id
+# }
 
 module "azure_vnet" {
   source = "./azure/vnet"
