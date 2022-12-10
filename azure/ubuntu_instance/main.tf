@@ -50,7 +50,7 @@ resource "azurerm_network_security_group" "my_terraform_nsg" {
     destination_address_prefix = "*"
   }
   security_rule {
-    name                       = "SSH"
+    name                       = "Postgresql"
     priority                   = 1001
     direction                  = "Inbound"
     access                     = "Allow"
