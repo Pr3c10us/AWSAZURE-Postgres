@@ -133,6 +133,20 @@ resource "aws_security_group" "aws-linux-sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow incoming Postgres connections"
   }
+  ingress {
+    from_port   = 7000
+    to_port     = 7000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow incoming haproxy connections"
+  }
+  ingress {
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow incoming Postgres connections through haproxy"
+  }
 
   egress {
     from_port   = 0
